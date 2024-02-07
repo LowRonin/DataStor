@@ -1,26 +1,34 @@
 package server;
-import java.io.*;
-import java.net.*;
+
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 public class SocketServer {
 
     public static void main(String[] args) {
-        //РџРѕСЂС‚ СЃРµСЂРІРµСЂР°
+        //Порт сервера
         int portNumber = 43555;
 
 
         try {
-            //РЎРµСЂРІРµСЂРЅС‹Р№ СЃРѕРєРµС‚
+            //Серверный сокет
             ServerSocket serverSocket = new ServerSocket(portNumber);
-            System.out.println("РЎРµСЂРІРµСЂ Р·Р°РїСѓС‰РµРЅ; РџРѕСЂС‚:" + portNumber);
+            System.out.println("Сервер запущен; Порт:" + portNumber);
 
-            //РћР¶РёРґР°РЅРёРµ РїРѕРґРєР»СЋС‡РµРЅРёСЏ
+            //Ожидание подключения
             while (true) {
                 Socket clientSocket = serverSocket.accept();
 
+                ClientHandler clientHandler = new ClientHandler(clientSocket);
+                System.out.println("Место клиента создано");
+                Thread thread = new Thread(clientHandler);
+                System.out.println("Клиент подключен");
+                thread.start();
             }
         } catch (IOException e) {
-            System.err.println("РћС€РёР±РєР°: " + e.getMessage());
+            System.err.println("Ошибка: " + e.getMessage());
         }
     }
 }
