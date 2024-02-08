@@ -15,15 +15,14 @@ public class SocketServer {
         try {
             //Серверный сокет
             ServerSocket serverSocket = new ServerSocket(portNumber);
-            System.out.println("Сервер запущен; Порт:" + portNumber);
+            System.out.println("Сервер запущен;\nПорт:" + portNumber);
 
             //Ожидание подключения
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-
-                ClientHandler clientHandler = new ClientHandler(clientSocket);
+                ConnectionHandler connectionHandler = new ConnectionHandler(clientSocket);
                 System.out.println("Место клиента создано");
-                Thread thread = new Thread(clientHandler);
+                Thread thread = new Thread(connectionHandler);
                 System.out.println("Клиент подключен");
                 thread.start();
             }
